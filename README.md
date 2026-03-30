@@ -1,103 +1,128 @@
-# Rails + Inertia.js + React — AI-Powered Boilerplate
+# Arbor — Cybersecurity Report Builder
 
-Boilerplate prêt à cloner pour démarrer un projet Rails avec Inertia.js, React, i18n natif et un **système multi-agents IA** intégré via Claude Code.
+Éditeur de rapports cybersécurité par blocs, conçu pour les pentesters, auditeurs GRC et analystes sécurité. Assemblage visuel de composants métier spécialisés, export HTML autonome.
+
+![Rails](https://img.shields.io/badge/Rails-8.1-red) ![React](https://img.shields.io/badge/React-18-blue) ![Blocs](https://img.shields.io/badge/Blocs-61%2F100-green)
+
+## Fonctionnalités
+
+- **100 types de blocs** métier (61 implémentés) : pentest, GRC, network, graphs, et plus
+- **Universal Table** — 1 composant tableau avec 12 types de colonnes typées et 14 presets (RACI, CVE, scan de ports, registre de risques...)
+- **14 types de graphiques** SVG pur (barres, lignes, radar, Sankey, treemap, heatmap...)
+- **Export HTML** fidèle et autonome (un seul fichier, pas de CDN)
+- **Drag & drop** avec @dnd-kit (réordonnancement, insertion depuis le drawer)
+- **Autosave** avec feedback visuel temps réel
+- **5 rapports démo** inclus (pentest, GRC, infra, dashboard, web)
+- **Système multi-agents IA** pour le développement assisté
 
 ## Stack
 
-| Couche | Technologie | Version |
-|--------|------------|---------|
-| Backend | Ruby on Rails | 8.1 |
-| Frontend | React + Inertia.js | 18 + 2.x |
-| Bundler | Vite (vite_rails) | 6.x |
-| DB dev | SQLite | 3 |
-| DB prod | PostgreSQL | - |
-| i18n | Rails I18n natif | fr + en |
-| IA | Claude Code (multi-agents) | - |
+| Couche | Technologie |
+|--------|------------|
+| Backend | Ruby on Rails 8.1 |
+| Frontend | React 18 + Inertia.js |
+| Bundler | Vite 6 (vite_rails) |
+| State | Zustand + Immer |
+| Drag & Drop | @dnd-kit |
+| DB dev | SQLite |
+| DB prod | PostgreSQL |
+| i18n | Rails I18n (fr + en) |
 
 ## Prérequis
 
-- [rbenv](https://github.com/rbenv/rbenv) + ruby-build (Ruby 3.3+ géré automatiquement via `.ruby-version`)
-- Node.js 20+ (géré automatiquement via `.nvmrc` si nvm est installé)
+- Ruby 3.3+ (via [rbenv](https://github.com/rbenv/rbenv))
+- Node.js 20+ (via [nvm](https://github.com/nvm-sh/nvm))
 - SQLite3 (`sudo apt install sqlite3 libsqlite3-dev` sur Debian/Ubuntu)
-- [Claude Code](https://claude.ai/claude-code) pour le système multi-agents
 
-## Quickstart
+## Installation
 
 ```bash
-git clone https://github.com/DrEggdwarf/Rails-Boilerplate.git mon-projet
-cd mon-projet
+git clone https://github.com/DrEggdwarf/Arbor.git
+cd Arbor
 bash bin/setup
 ```
 
 > Ouvrir **http://localhost:3000**
 
-`bin/setup` installe gems + packages JS, prépare la base de données et lance le serveur.
-Les ports 3000 et 3036 sont libérés automatiquement si déjà utilisés.
+`bin/setup` installe les gems, les packages JS, prépare la base et lance le serveur. Les ports 3000 et 3036 sont libérés automatiquement.
 
-## Personnaliser le boilerplate
+## Catalogue des blocs
 
-1. **Renommer l'app** : remplacer `app_name` dans `config/deploy.yml` et `config/cable.yml`
-2. **Changer le titre** : modifier `config/locales/fr.yml` et `config/locales/en.yml`
-3. **Remplacer la page d'accueil** : éditer `app/frontend/pages/Home.jsx`
-4. **Configurer la prod** : renseigner `config/deploy.yml` (serveur, image Docker)
+| Catégorie | Blocs | Statut |
+|-----------|-------|--------|
+| Content | section-title, text, code, table, callout | ✅ 5/5 |
+| Layout | separator, spacer, columns, drawer | ✅ 4/4 |
+| Media | image | ✅ 1/1 |
+| Pentest | vuln-card, CVE, CVSS, kill-chain, attack-path, credentials... | ✅ 13/13 |
+| Network | topology, port-scan, firewall, VLAN, DNS, certificat... | ✅ 12/12 |
+| GRC | EBIOS, compliance, risk-register, RACI, maturity radar... | ✅ 12/12 |
+| Graph | bar, line, pie, radar, sankey, heatmap, treemap... | ✅ 14/14 |
+| Hardware | circuit, pin, waveform, memory-map... | 🔲 0/10 |
+| OSINT | relationship-graph, geo-map, whois, timeline... | 🔲 0/13 |
+| Forensics | disk-map, process-tree, IOC, hex-viewer... | 🔲 0/10 |
+| Social Eng. | phishing-stats, awareness-score, vishing... | 🔲 0/6 |
+
+Détails complets : [ai/context/module-catalogue.md](ai/context/module-catalogue.md)
+
+## Architecture
+
+```
+app/
+├── controllers/          # Rails controllers (reports CRUD)
+├── models/               # Report model (JSON content)
+├── frontend/
+│   ├── pages/            # Home, Editor (Inertia pages)
+│   ├── components/Editor/
+│   │   ├── blocks/       # Block renderers (61 fichiers)
+│   │   ├── modals/       # Modal editors
+│   │   ├── Canvas.jsx    # Zone de rendu A4
+│   │   ├── ComponentDrawer.jsx
+│   │   ├── TreeDrawer.jsx
+│   │   └── Topbar.jsx
+│   ├── stores/           # Zustand (editorStore, blockRegistry)
+│   ├── lib/              # Utilitaires (chartUtils, tableMigration, tablePresets)
+│   └── styles/           # Tokens, globals, editor CSS
+├── views/layouts/        # Rails layout avec Inertia + Vite
+db/
+├── seeds.rb              # 5 rapports démo complets
+ai/
+├── agents/               # 12 agents IA (YAML configs)
+├── context/              # Mémoire projet (sprint_log, decisions, backlog)
+└── workflows/            # Workflows code_review, new_feature
+```
+
+## Développement
+
+```bash
+bin/dev              # Lance Rails + Vite (ports 3000 + 3036)
+bin/rails db:seed    # Recrée les rapports démo
+bin/rails db:reset   # Reset complet (drop + create + migrate + seed)
+```
 
 ## Système Multi-Agents IA
 
-Ce boilerplate inclut un framework agile multi-agents piloté par Claude Code.
+Arbor inclut un framework de développement assisté par IA (12 agents spécialisés pilotés par Claude Code).
 
-### Principe
+Voir [CLAUDE.md](CLAUDE.md) pour la documentation complète du framework.
 
-Claude Code agit comme **Manager** : il clarifie la demande, planifie un sprint, délègue aux agents, orchestre la code review et met à jour la documentation.
+| Agent | Domaine |
+|-------|---------|
+| @pm | Specs, user stories |
+| @architect | Structure, patterns |
+| @backend | Rails, controllers |
+| @frontend | React, composants |
+| @security | Audit OWASP |
+| @testing | Tests unitaires |
+| @quality | Code quality |
+| @performance | Perf, N+1 |
+| @a11y | WCAG 2.1 AA |
+| @pentester | Tests d'intrusion |
+| @database | SQL, migrations |
+| @devops | Docker, CI/CD |
 
-```
-Demande → Clarification → Sprint Planning → Exécution → Review → Documentation
-```
+## Licence
 
-### Les 12 agents
-
-#### Agents de construction
-
-| Agent | Modèle | Domaine |
-|-------|--------|---------|
-| @pm | haiku | Specs, user stories, priorisation |
-| @architect | sonnet | Structure, patterns, dépendances |
-| @backend | sonnet | Rails, modèles, controllers, i18n |
-| @frontend | haiku | React, Inertia, composants |
-| @devops | haiku | Docker, CI/CD, déploiement |
-| @database | sonnet | Migrations, index, perf SQL |
-
-#### Agents de review (phase automatique après chaque sprint)
-
-| Agent | Modèle | Domaine | Déclenchement |
-|-------|--------|---------|---------------|
-| @security | sonnet | Audit OWASP, secrets | Toujours |
-| @testing | sonnet | Tests unitaires & intégration | Toujours |
-| @quality | sonnet | Complexité, nommage, DRY | Toujours |
-| @performance | sonnet | Core Web Vitals, N+1, bundle | Backend ou frontend modifié |
-| @a11y | sonnet | WCAG 2.1 AA, contraste, ARIA | Frontend modifié |
-| @pentester | sonnet | Tests d'intrusion (localhost) | Sur demande |
-
-### Utilisation
-
-Ouvrir Claude Code dans ce projet et décrire une feature :
-
-```
-"Je veux ajouter un système d'authentification avec email/password"
-```
-
-Le Manager va :
-1. Poser des questions de clarification
-2. Proposer un sprint plan à valider
-3. Exécuter les agents dans l'ordre (séquentiel ou parallèle)
-4. Lancer la code review automatique
-5. Mettre à jour la documentation
-
-### Mémoire entre sessions
-
-Les agents documentent leur travail dans `ai/context/` (versionné) :
-- `sprint_log.md` — Historique des sprints
-- `decisions.md` — Décisions d'architecture (ADR)
-- `backlog.md` — Tâches futures identifiées
+[MIT](LICENSE)
 
 ## i18n
 

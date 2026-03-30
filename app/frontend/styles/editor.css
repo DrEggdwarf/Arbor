@@ -1,0 +1,70 @@
+/* Editor-specific styles — animations & pseudo-classes */
+
+.canvas-page {
+  position: relative;
+}
+
+/* Scrollbar for dark drawers */
+.drawer-dark {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(240, 237, 230, 0.2) transparent;
+}
+
+/* Dragging ghost */
+[data-dnd-dragging] {
+  opacity: 0.5;
+  cursor: grabbing !important;
+}
+
+/* ── Cartouche technique ── */
+.arbor-cartouche {
+  display: inline;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.9em;
+  background: rgba(26, 26, 24, 0.06);
+  color: #1A1A18;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  user-select: all;
+  border: 1px solid rgba(26, 26, 24, 0.1);
+  transition: background 0.12s, border-color 0.12s;
+}
+.arbor-cartouche:hover {
+  background: rgba(26, 26, 24, 0.11);
+  border-color: rgba(26, 26, 24, 0.18);
+}
+
+/* ── Severity badges inline (full-color pills) ── */
+.arbor-badge {
+  display: inline;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78em;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+  border: none;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+.arbor-badge-critical {
+  background: #c0392b;
+}
+.arbor-badge-high {
+  background: #e67e22;
+}
+.arbor-badge-medium {
+  background: #f39c12;
+  color: #fff;
+}
+.arbor-badge-low {
+  background: #27ae60;
+}
+.arbor-badge-info {
+  background: #2980b9;
+}

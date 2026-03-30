@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Add user gem bin to PATH (for gem install --user-install)
-export PATH="$HOME/.local/share/gem/ruby/$(ruby -e 'puts RUBY_VERSION[/\d+\.\d+/]').0/bin:$HOME/.rbenv/shims:$PATH"
+# Ensure rbenv shims take priority, then user gem bin for executables like foreman
+export PATH="$HOME/.rbenv/shims:$HOME/.local/share/gem/ruby/$(ruby -e 'puts RUBY_VERSION[/\d+\.\d+/]').0/bin:$PATH"
 
 if ! command -v foreman &> /dev/null; then
   echo "Installing foreman..."

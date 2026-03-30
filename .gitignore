@@ -38,7 +38,10 @@ node_modules
 # Vendor bundle
 /vendor/bundle/
 
-# Claude Code local settings (machine-specific paths)
-.claude/settings.local.json
+# Vite build output
+/public/vite/
 /public/vite-dev/
 /public/vite-test/
+
+# Claude Code local settings (machine-specific paths)
+.claude/settings.local.json

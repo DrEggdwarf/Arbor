@@ -10,5 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 0) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_27_210401) do
+  create_table "reports", force: :cascade do |t|
+    t.string "accent_color", default: "#E8A855", null: false
+    t.json "content", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.integer "report_type", default: 0, null: false
+    t.string "title", default: "Nouveau rapport", null: false
+    t.datetime "updated_at", null: false
+    t.index ["report_type"], name: "index_reports_on_report_type"
+    t.index ["updated_at"], name: "index_reports_on_updated_at"
+  end
 end

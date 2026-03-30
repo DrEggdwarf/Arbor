@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "../lib/icons";
 import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
 

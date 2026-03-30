@@ -1,6 +1,6 @@
-# Design System — Charte Graphique
+# Design System — Arbor Report Builder
 
-> Document vivant. Mis à jour par @frontend lors de chaque sprint qui touche à l'UI.
+> Document vivant. Mis à jour par @frontend lors de chaque sprint UI.
 > Source de vérité pour tous les choix visuels du projet.
 
 ---
@@ -16,110 +16,135 @@ Les variables CSS globales sont dans `app/frontend/styles/globals.css`.
 
 ## Palette de couleurs
 
-### Couleurs de marque
+### Surfaces
 | Token | Valeur | Usage |
 |-------|--------|-------|
-| `colors.primary` | `#16213e` | Couleur principale, headers, CTA primaires |
-| `colors.primaryLight` | `#1a2a50` | Hover sur primary |
-| `colors.accent` | `#0a9396` | Liens, badges, éléments interactifs secondaires |
-| `colors.accentLight` | `#94d2bd` | Fonds de badges, highlights |
+| `colors.bg` | `#F5F3EE` | Fond canvas (crème chaud) |
+| `colors.surface` | `#FDFCF9` | Surface page A4 (blanc cassé) |
+| `colors.drawer.bg` | `#1A1A18` | Fond drawers et topbar |
+| `colors.drawer.surface` | `#242420` | Éléments secondaires drawers |
+| `colors.drawer.cardBg` | `#2C2C28` | Cartes composants drawer |
 
-### Couleurs sémantiques
+### Accent
 | Token | Valeur | Usage |
 |-------|--------|-------|
-| `colors.success` | `#2a9d8f` | Succès, confirmations |
-| `colors.warning` | `#e9c46a` | Avertissements |
-| `colors.error` | `#e76f51` | Erreurs, destructions |
-| `colors.info` | `#457b9d` | Informations neutres |
+| `colors.accent` | `#C8B89A` | Accent subtil |
+| `colors.accentBright` | `#E8A855` | Accent principal (ambre) |
+| `colors.accentHover` | `#F0B960` | Hover sur accent |
 
-### Règles d'accessibilité
-- Ratio de contraste texte/fond : **minimum 4.5:1** (WCAG AA)
-- Ratio grand texte (>18px ou bold >14px) : **minimum 3:1**
-- Ne jamais transmettre une information par la couleur seule (ajouter icône ou texte)
+### Sémantiques
+| Token | Valeur | Usage |
+|-------|--------|-------|
+| `colors.success` | `#5CB85C` | Succès, sauvegardé |
+| `colors.warning` | `#E9C46A` | Avertissements |
+| `colors.error` | `#E57373` | Erreurs, suppression |
+| `colors.info` | `#5B8FD4` | Info, hover bloc |
+
+### Risques (matrice OWASP)
+| Niveau | Fond | Texte |
+|--------|------|-------|
+| Faible | `#D4EDDA` | `#2D7A47` |
+| Moyen | `#FFF3CD` | `#856404` |
+| Élevé | `#FDDCB5` | `#9C4221` |
+| Critique | `#F8D7DA` | `#842029` |
+
+### Texte
+| Token | Valeur | Usage |
+|-------|--------|-------|
+| `text.primary` | `#1A1A18` | Texte principal sur clair |
+| `text.secondary` | `#6B6860` | Texte secondaire |
+| `text.muted` | `#A8A59E` | Labels, métadonnées |
+| `text.onDark` | `#F0EDE6` | Texte sur fond sombre |
+| `text.mutedOnDark` | `#9A9690` | Labels sur fond sombre |
+
+### Interactions blocs
+| État | Style |
+|------|-------|
+| Hover | Outline pointillé `#5B8FD4` (bleu) |
+| Sélectionné | Outline plein `#E8A855` (ambre) |
 
 ---
 
 ## Typographie
 
 ### Familles
-- **Sans-serif** : System font stack (`-apple-system, BlinkMacSystemFont, "Segoe UI"...`)
-- **Monospace** : `SFMono-Regular, Consolas, Menlo` — pour le code uniquement
+| Usage | Font | Token |
+|-------|------|-------|
+| Titres, logo | **Fraunces** (serif, 300) | `fontFamily.heading` |
+| Corps, UI, code | **DM Mono** (monospace) | `fontFamily.body` |
 
 ### Échelle
-| Niveau | Token | Taille | Usage |
-|--------|-------|--------|-------|
-| XS | `fontSize.xs` | 12px | Labels, métadonnées |
-| SM | `fontSize.sm` | 14px | Texte secondaire, captions |
-| Base | `fontSize.base` | 16px | Corps de texte standard |
-| LG | `fontSize.lg` | 18px | Intro, lead text |
-| XL | `fontSize.xl` | 20px | Sous-titres de sections |
-| 2XL | `fontSize.2xl` | 24px | Titres secondaires (h2) |
-| 4XL | `fontSize.4xl` | 36px | Titre principal (h1) |
+| Token | Taille | Usage |
+|-------|--------|-------|
+| `xs` | 9px | Labels uppercase, badges |
+| `sm` | 10px | Catégories drawer, labels propriétés |
+| `base` | 11px | Texte UI courant, boutons |
+| `md` | 12px | Corps de texte page, code |
+| `lg` | 13px | Texte de bloc |
+| `xl` | 16px | Titre de section bloc |
+| `2xl` | 18px | Logo |
+| `3xl` | 28px | Titre rapport |
 
 ### Règles
-- H1 unique par page
-- Hiérarchie stricte h1 → h2 → h3 (pas de sauts)
-- `line-height: 1.5` pour le corps, `1.25` pour les titres
+- Labels uppercase : `letter-spacing: 0.08-0.12em`, `font-size: 9-10px`
+- Titres : `font-weight: 300` (Fraunces light)
+- Logo : Fraunces 18px, letter-spacing -0.02em
 
 ---
 
-## Espacement
+## Layout
 
-Unité de base : **4px** (`spacing.1 = 0.25rem`)
+| Zone | Dimension |
+|------|-----------|
+| Topbar | hauteur 48px, fond `drawer.bg` |
+| Drawer composants | largeur 260px, fond `drawer.bg` |
+| Tree drawer (arborescence) | largeur 220px, fond `surface` |
+| Canvas | flex-1, fond `bg` avec grille de points |
+| Page A4 | 794px × 1123px min, fond `surface` |
+| Panel propriétés | largeur 220px, fond `surface` |
 
-| Token | Valeur | Usage typique |
-|-------|--------|---------------|
-| `spacing[2]` | 8px | Espacement interne compact (padding boutons) |
-| `spacing[4]` | 16px | Espacement standard entre éléments |
-| `spacing[6]` | 24px | Espacement sections internes |
-| `spacing[8]` | 32px | Espacement entre sections |
-| `spacing[12]` | 48px | Espacement grandes sections |
-
-**Règle** : toujours utiliser un multiple de 4px. Jamais de valeurs arbitraires (ex: 13px, 22px).
+### Grille de points du canvas
+```css
+background-image: radial-gradient(circle at 1px 1px, rgba(26,26,24,0.07) 1px, transparent 0);
+background-size: 24px 24px;
+```
 
 ---
 
 ## Composants
 
 ### Boutons
+| Type | Style |
+|------|-------|
+| Primaire (CTA) | bg=accentBright, text=dark, hover=accentHover + translateY(-1px) + shadow |
+| Ghost | bg=transparent, border=drawer.border, text=mutedOnDark, hover=drawer.surface |
+| Export | border=border, bg=bg, hover=text-primary border |
+
+### Cartes composants (drawer)
 ```
-Primaire  : bg=primary, text=white, hover=primaryLight
-Secondaire: bg=transparent, border=primary, text=primary
-Danger    : bg=error, text=white
-Désactivé : opacity 0.5, cursor not-allowed
+bg=drawer.cardBg, border=1px solid drawer.cardBorder, radius=6px
+Hover: border=accent, translateY(-1px), shadow elevated
+Grid 2 colonnes dans le drawer, items `.wide` = span 2
+Badge cybersec: point 5px ambre en haut à droite
 ```
 
-### Cards
+### Blocs (canvas)
 ```
-bg=white, border=1px solid colors.border.light, radius=radii.lg, shadow=shadows.sm
-Hover : shadow=shadows.md
-```
-
-### Formulaires
-```
-Input : border=colors.border.default, radius=radii.md, focus=accent outline
-Label : fontSize.sm, fontWeight.medium, color=text.secondary
-Error : color=error, fontSize.sm
+margin-bottom: 24px
+Toolbar: absolute right -40px, visible au hover (↑↓⋯✕)
+Hover: outline 1.5px dashed #5B8FD4 à -4px
+Sélection: outline 1.5px solid #E8A855 à -4px
 ```
 
 ---
 
-## Accessibilité (intégrée au design)
+## Accessibilité
 
-- Tous les boutons ont un état `:focus-visible` visible (outline `2px solid accent`)
-- Toutes les images ont un `alt`
-- Les icônes décoratives ont `aria-hidden="true"`
-- Les formulaires ont des labels associés (`htmlFor`)
-- Les couleurs d'erreur sont accompagnées d'une icône ou d'un message texte
-
----
-
-## Ce qui est à décider au démarrage du projet
-
-- [ ] Logo et favicon
-- [ ] Couleurs de marque (remplacer les valeurs dans `tokens.js`)
-- [ ] Police personnalisée (Google Fonts, etc.) — modifier `globals.css`
-- [ ] Dark mode (variables CSS prêtes pour être dupliquées sous `@media (prefers-color-scheme: dark)`)
+- Ratio de contraste texte/fond : **minimum 4.5:1** (WCAG AA)
+- Focus visible : outline 2px solid accentBright
+- Pas de couleur seule pour transmettre l'info (toujours icône + texte)
+- Navigation clavier dans le drawer et l'arborescence
+- ARIA roles sur les zones drag & drop
 
 ---
 
@@ -127,6 +152,9 @@ Error : color=error, fontSize.sm
 
 | Date | Décision | Raison |
 |------|----------|--------|
-| 2026-03-11 | System fonts stack (pas de Google Fonts) | Performance — pas de requête externe |
+| 2026-03-11 | System fonts stack | Performance — pas de requête externe |
+| 2026-03-27 | Migration vers Fraunces + DM Mono | Alignement sur mockup Arbor, identité visuelle unique |
+| 2026-03-27 | Palette crème/ambre/sombre | Charte Arbor — rapport cybersec élégant et lisible |
+| 2026-03-27 | Ajout tree drawer (arborescence blocs) | UX : vue structurée, drag & drop depuis l'arbre |
 | 2026-03-11 | Spacing unit = 4px | Cohérence avec les standards (Tailwind, Material) |
 | 2026-03-11 | WCAG AA comme standard minimum | Accessibilité comme exigence de base |

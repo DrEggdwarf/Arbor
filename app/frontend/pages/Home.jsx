@@ -1,138 +1,155 @@
+import { usePage, router } from "@inertiajs/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "../lib/useTranslation";
-import LocaleSwitcher from "../components/LocaleSwitcher";
+import { colors, typography, radii } from "../styles/tokens";
 
-export default function Home({ stack, agents }) {
-  const { t } = useTranslation();
-
-  return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <div style={styles.headerTop}>
-          <div />
-          <LocaleSwitcher />
-        </div>
-        <h1 style={styles.title}>{t("app.name")}</h1>
-        <p style={styles.subtitle}>{t("app.tagline")}</p>
-      </header>
-
-      <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>{t("home.stack_title")}</h2>
-        <div style={styles.grid}>
-          {stack.map(({ name, version, role }) => (
-            <div key={name} style={styles.card}>
-              <strong>{name}</strong>
-              <span style={styles.version}>{version}</span>
-              <span style={styles.role}>{role}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>{t("home.agents_build_title")}</h2>
-        <div style={styles.grid}>
-          {agents.build.map(({ name, model }) => (
-            <div key={name} style={styles.card}>
-              <strong>@{name}</strong>
-              <span style={styles.model}>{model}</span>
-              <span style={styles.role}>{t(`agents.${name}`)}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>{t("home.agents_review_title")}</h2>
-        <div style={styles.grid}>
-          {agents.review.map(({ name, model }) => (
-            <div key={name} style={styles.card}>
-              <strong>@{name}</strong>
-              <span style={styles.model}>{model}</span>
-              <span style={styles.role}>{t(`agents.${name}`)}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>{t("home.getting_started_title")}</h2>
-        <ol style={styles.steps}>
-          {t("home.getting_started_steps").map((step, i) => (
-            <li key={i} dangerouslySetInnerHTML={{ __html: step.replace(/`([^`]+)`/g, "<code>$1</code>") }} />
-          ))}
-        </ol>
-      </section>
-
-      <footer style={styles.footer}>
-        <p>{t("home.footer")}</p>
-      </footer>
-    </div>
-  );
-}
-
-const styles = {
+const s = {
   container: {
-    maxWidth: 900,
-    margin: "0 auto",
-    padding: "2rem",
-    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-    color: "#1a1a2e",
-  },
-  header: {
-    marginBottom: "3rem",
-    paddingBottom: "2rem",
-    borderBottom: "2px solid #e0e0e0",
-  },
-  headerTop: {
+    minHeight: "100vh",
+    background: colors.bg,
     display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "1rem",
+    justifyContent: "center",
+    padding: "80px 40px",
   },
+  content: { maxWidth: 960, width: "100%" },
+  header: { marginBottom: 40 },
   title: {
-    fontSize: "2.5rem",
-    margin: 0,
-    color: "#16213e",
-    textAlign: "center",
+    fontFamily: typography.fontFamily.heading,
+    fontSize: typography.fontSize["3xl"],
+    fontWeight: typography.fontWeight.light,
+    color: colors.text.primary,
+    letterSpacing: "-0.02em",
+    marginBottom: 16,
   },
-  subtitle: {
-    fontSize: "1.2rem",
-    color: "#666",
-    marginTop: "0.5rem",
-    textAlign: "center",
-  },
-  section: { marginBottom: "2.5rem" },
-  sectionTitle: {
-    fontSize: "1.4rem",
-    marginBottom: "1rem",
-    color: "#16213e",
-    borderBottom: "1px solid #eee",
-    paddingBottom: "0.5rem",
+  newBtn: {
+    padding: "8px 20px",
+    background: colors.accentBright,
+    color: colors.text.primary,
+    border: "none",
+    borderRadius: radii.md,
+    fontFamily: typography.fontFamily.body,
+    fontSize: typography.fontSize.base,
+    fontWeight: typography.fontWeight.medium,
+    cursor: "pointer",
+    letterSpacing: "0.02em",
   },
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-    gap: "1rem",
+    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+    gap: 16,
   },
   card: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.3rem",
-    padding: "1rem",
-    borderRadius: 8,
-    backgroundColor: "#f8f9fa",
-    border: "1px solid #e9ecef",
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
+    borderRadius: radii.lg,
+    padding: 20,
+    boxShadow: colors.shadow.card,
+    cursor: "pointer",
+    transition: "all 0.15s",
+    position: "relative",
   },
-  version: { fontSize: "0.85rem", color: "#0a9396", fontFamily: "monospace" },
-  model: { fontSize: "0.8rem", color: "#e76f51", fontWeight: 600, textTransform: "uppercase" },
-  role: { fontSize: "0.85rem", color: "#888" },
-  steps: { lineHeight: 2, fontSize: "1.05rem" },
-  footer: {
+  cardTitle: {
+    fontFamily: typography.fontFamily.heading,
+    fontSize: typography.fontSize.xl,
+    fontWeight: typography.fontWeight.light,
+    color: colors.text.primary,
+    marginBottom: 8,
+  },
+  badge: {
+    display: "inline-block",
+    padding: "2px 8px",
+    background: `${colors.accentBright}22`,
+    color: colors.accentBright,
+    borderRadius: radii.md,
+    fontFamily: typography.fontFamily.body,
+    fontSize: typography.fontSize.xs,
+    fontWeight: typography.fontWeight.medium,
+    letterSpacing: "0.06em",
+    textTransform: "uppercase",
+    marginBottom: 8,
+  },
+  date: {
+    fontFamily: typography.fontFamily.body,
+    fontSize: typography.fontSize.sm,
+    color: colors.text.muted,
+  },
+  deleteBtn: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    padding: "4px 8px",
+    background: "transparent",
+    color: colors.text.muted,
+    border: "none",
+    borderRadius: radii.md,
+    fontSize: "14px",
+    cursor: "pointer",
+    opacity: 0,
+    transition: "opacity 0.15s",
+  },
+  empty: {
     textAlign: "center",
-    color: "#aaa",
-    fontSize: "0.9rem",
-    marginTop: "3rem",
-    paddingTop: "1.5rem",
-    borderTop: "1px solid #eee",
+    padding: 60,
+    color: colors.text.muted,
+    fontFamily: typography.fontFamily.body,
+    fontSize: typography.fontSize.md,
   },
 };
+
+export default function Home() {
+  const { reports } = usePage().props;
+  const { t } = useTranslation();
+
+  return (
+    <div style={s.container}>
+      <div style={s.content}>
+        <div style={s.header}>
+          <h1 style={s.title}>{t("reports.title")}</h1>
+          <button style={s.newBtn} onClick={() => router.post("/reports")}>
+            + {t("reports.new")}
+          </button>
+        </div>
+
+        {reports?.length > 0 ? (
+          <div style={s.grid}>
+            {reports.map((r) => (
+              <div
+                key={r.id}
+                style={{ ...s.card, borderLeft: `3px solid ${r.accent_color || colors.accentBright}` }}
+                onClick={() => router.visit(`/reports/${r.id}`)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = colors.shadow.page;
+                  e.currentTarget.querySelector("[data-delete]").style.opacity = "1";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "";
+                  e.currentTarget.style.boxShadow = colors.shadow.card;
+                  e.currentTarget.querySelector("[data-delete]").style.opacity = "0";
+                }}
+              >
+                <button
+                  data-delete
+                  style={s.deleteBtn}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm(t("reports.delete_confirm"))) {
+                      router.delete(`/reports/${r.id}`);
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon="times" />
+                </button>
+                <h3 style={s.cardTitle}>{r.title}</h3>
+                <div style={s.badge}>{t(`reports.types.${r.report_type}`)}</div>
+                <p style={s.date}>{new Date(r.updated_at).toLocaleDateString()}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p style={s.empty}>{t("reports.empty")}</p>
+        )}
+      </div>
+    </div>
+  );
+}

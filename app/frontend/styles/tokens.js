@@ -1,154 +1,150 @@
 /**
- * Design Tokens — source de vérité pour tous les styles
+ * Design Tokens — Arbor Report Builder
+ * Source de vérité pour tous les styles, aligné sur le mockup.
  *
- * Usage dans un composant :
- *   import { colors, spacing, typography } from "../styles/tokens";
- *   style={{ color: colors.primary, padding: spacing[4] }}
- *
- * Modifier ces valeurs pour adapter le design à votre projet.
+ * Usage : import { colors, spacing, typography } from "../styles/tokens";
  */
 
 export const colors = {
-  // Marque — à personnaliser
-  primary: "#16213e",
-  primaryLight: "#1a2a50",
-  primaryDark: "#0d1526",
-  accent: "#0a9396",
-  accentLight: "#94d2bd",
+  // Canvas & surfaces
+  bg: "#F5F3EE",
+  surface: "#FDFCF9",
+  surfaceHover: "rgba(200,184,154,0.04)",
+
+  // Drawer (dark)
+  drawer: {
+    bg: "#1A1A18",
+    surface: "#242420",
+    border: "#333330",
+    cardBg: "#2C2C28",
+    cardBorder: "#3A3A36",
+    cardHover: "#2A2A26",
+  },
+
+  // Accent
+  accent: "#C8B89A",
+  accentBright: "#E8A855",
+  accentHover: "#F0B960",
 
   // Sémantiques
-  success: "#2a9d8f",
-  warning: "#e9c46a",
-  error: "#e76f51",
-  info: "#457b9d",
+  success: "#5CB85C",
+  warning: "#E9C46A",
+  error: "#E57373",
+  info: "#5B8FD4",
 
-  // Neutres
-  white: "#ffffff",
-  black: "#000000",
-  gray: {
-    50: "#f8f9fa",
-    100: "#f1f3f5",
-    200: "#e9ecef",
-    300: "#dee2e6",
-    400: "#ced4da",
-    500: "#adb5bd",
-    600: "#868e96",
-    700: "#495057",
-    800: "#343a40",
-    900: "#212529",
+  // Risques (matrice OWASP)
+  risk: {
+    low: { bg: "#D4EDDA", text: "#2D7A47" },
+    medium: { bg: "#FFF3CD", text: "#856404" },
+    high: { bg: "#FDDCB5", text: "#9C4221" },
+    critical: { bg: "#F8D7DA", text: "#842029" },
   },
 
   // Texte
   text: {
-    primary: "#1a1a2e",
-    secondary: "#495057",
-    muted: "#868e96",
-    inverse: "#ffffff",
-  },
-
-  // Fonds
-  bg: {
-    page: "#ffffff",
-    subtle: "#f8f9fa",
-    muted: "#f1f3f5",
+    primary: "#1A1A18",
+    secondary: "#4A4840",
+    muted: "#807D76",
+    onDark: "#F0EDE6",
+    mutedOnDark: "#B5B0A8",
   },
 
   // Bordures
-  border: {
-    light: "#e9ecef",
-    default: "#dee2e6",
-    strong: "#adb5bd",
+  border: "#E2DDD5",
+
+  // Interactions blocs
+  blockHover: "#5B8FD4",
+  blockSelected: "#E8A855",
+
+  // Ombres
+  shadow: {
+    soft: "0 2px 12px rgba(26,26,24,0.06)",
+    card: "0 1px 3px rgba(26,26,24,0.08), 0 4px 16px rgba(26,26,24,0.04)",
+    page: "0 1px 3px rgba(26,26,24,0.08), 0 4px 16px rgba(26,26,24,0.04), 0 20px 60px rgba(26,26,24,0.08)",
+    elevated: "0 4px 16px rgba(0,0,0,0.3)",
   },
 };
 
 export const typography = {
-  // Familles
   fontFamily: {
-    sans: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
-    mono: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace",
+    heading: "'Fraunces', serif",
+    body: "'DM Mono', monospace",
   },
-
-  // Tailles (rem)
   fontSize: {
-    xs: "0.75rem",    // 12px
-    sm: "0.875rem",   // 14px
-    base: "1rem",     // 16px
-    lg: "1.125rem",   // 18px
-    xl: "1.25rem",    // 20px
-    "2xl": "1.5rem",  // 24px
-    "3xl": "1.875rem",// 30px
-    "4xl": "2.25rem", // 36px
+    xs: "10px",
+    sm: "11px",
+    base: "12px",
+    md: "13px",
+    lg: "14px",
+    xl: "17px",
+    "2xl": "20px",
+    "3xl": "28px",
   },
-
-  // Graisses
   fontWeight: {
+    light: 300,
     normal: 400,
     medium: 500,
     semibold: 600,
-    bold: 700,
   },
-
-  // Hauteurs de ligne
+  letterSpacing: {
+    tight: "-0.02em",
+    normal: "0",
+    wide: "0.02em",
+    wider: "0.04em",
+    widest: "0.08em",
+    caps: "0.12em",
+  },
   lineHeight: {
-    tight: 1.25,
-    snug: 1.375,
+    tight: 1.2,
     normal: 1.5,
-    relaxed: 1.625,
-    loose: 2,
+    relaxed: 1.7,
+    loose: 1.75,
   },
 };
 
-// Espacement — multiples de 4px
 export const spacing = {
   0: "0",
-  1: "0.25rem",  // 4px
-  2: "0.5rem",   // 8px
-  3: "0.75rem",  // 12px
-  4: "1rem",     // 16px
-  5: "1.25rem",  // 20px
-  6: "1.5rem",   // 24px
-  8: "2rem",     // 32px
-  10: "2.5rem",  // 40px
-  12: "3rem",    // 48px
-  16: "4rem",    // 64px
-  20: "5rem",    // 80px
-  24: "6rem",    // 96px
+  1: "4px",
+  2: "6px",
+  3: "8px",
+  4: "10px",
+  5: "12px",
+  6: "14px",
+  7: "16px",
+  8: "20px",
+  9: "24px",
+  10: "32px",
+  12: "40px",
+  16: "64px",
+  20: "72px",
 };
 
 export const radii = {
   none: "0",
-  sm: "0.25rem",
-  md: "0.5rem",
-  lg: "0.75rem",
-  xl: "1rem",
+  sm: "2px",
+  md: "6px",
+  lg: "10px",
+  xl: "16px",
   full: "9999px",
 };
 
-export const shadows = {
-  none: "none",
-  sm: "0 1px 2px 0 rgba(0,0,0,0.05)",
-  md: "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)",
-  lg: "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)",
-  xl: "0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)",
-};
-
-export const breakpoints = {
-  sm: "640px",
-  md: "768px",
-  lg: "1024px",
-  xl: "1280px",
-  "2xl": "1536px",
+export const layout = {
+  drawerWidth: "260px",
+  treeDrawerWidth: "220px",
+  topbarHeight: "48px",
+  propertiesPanelWidth: "260px",
+  pageWidth: "794px",
+  pageMinHeight: "1123px",
+  pagePadding: "64px 72px",
 };
 
 export const zIndex = {
   base: 0,
-  dropdown: 100,
-  sticky: 200,
+  drawer: 10,
+  topbar: 100,
   overlay: 300,
   modal: 400,
-  toast: 500,
+  tooltip: 999,
 };
-
-// Export groupé pour import unique
-const tokens = { colors, typography, spacing, radii, shadows, breakpoints, zIndex };
+const tokens = { colors, typography, spacing, radii, zIndex };
 export default tokens;
