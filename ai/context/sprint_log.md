@@ -259,3 +259,33 @@
   - 15 modals : ActionPlanModal, ComplianceChecklistModal, ControlMatrixModal, CredentialsTableModal, CVETableModal, DnsRecordsModal, EbiosFearedEventsModal, EbiosScenariosModal, FirewallRulesModal, PortScanTableModal, RaciMatrixModal, RiskRegisterModal, ServerInventoryModal, TableModal, WirelessSurveyModal
 - **Fichiers modifiés** : README.md, .gitignore, backlog.md, sprint_log.md, Editor.jsx, editorStore.js, Topbar.jsx, seeds.rb
 - **Statut** : Terminé
+
+## Sprint 2026-03-30c — Déploiement VPS + Intégration Lab Portfolio
+- **Tickets** : 5 exécutés
+- **Agents utilisés** : aucun (déploiement infra manuel)
+- **Actions réalisées** :
+  1. **Dockerfile** créé — Multi-stage build : Ruby 3.3.10-slim + Node 22 + Vite precompile + Thruster port 80 + jemalloc + healthcheck `/up`
+  2. **Nettoyage VPS** — Disque à 98% (486MB libre) → 75% (5.6GB) après suppression containers arrêtés + build cache + dangling images
+  3. **Déploiement Arbor** — Container `arbor-web` sur réseau kamal, volume `arbor-storage`, TLS auto via kamal-proxy → https://arbor.robin-borg.dev
+  4. **Intégration Lab Portfolio** — manifest.json créé, ajout à `apps.yml`, ajout `arbor` dans `LAB_APP_IDS` du PagesController
+  5. **Fix iframe** — Rails envoie `X-Frame-Options: SAMEORIGIN` par défaut → remplacé par `Content-Security-Policy: frame-ancestors 'self' https://robin-borg.dev https://aegyl.fr`
+  6. **Fix icône** — manifest référençait `2D-tree` (inexistant) → changé en `2D-diamond`
+- **Fichiers créés** :
+  - `Dockerfile` (Arbor)
+  - `app/frontend/lab/apps/arbor/manifest.json` (Portfolio)
+- **Fichiers modifiés** :
+  - `app/controllers/application_controller.rb` — `allow_iframe_from_portfolio` after_action
+  - `apps.yml` (Portfolio) — entrée Arbor ajoutée
+  - `app/controllers/pages_controller.rb` (Portfolio) — `LAB_APP_IDS = %w[asmble arbor]`
+- **Pièges rencontrés** :
+  - Le `SECRET_KEY_BASE` n'est pas utilisé par le Portfolio (utilise `RAILS_MASTER_KEY` via credentials chiffrées)
+  - Vite fait du code-splitting : les manifests Lab sont dans `Index-*.js`, pas dans `application-*.js`
+  - Les icônes Lab sont hardcodées (12 noms seulement) dans `registry.ts`
+  - `PagesController` a une whitelist `LAB_APP_IDS` — il faut ajouter chaque nouvelle app
+- **Infra VPS résultante** :
+  - `arbor-web` → arbor.robin-borg.dev (TLS, port 80)
+  - `portfolio-web-latest` → robin-borg.dev, aegyl.fr (TLS, port 3000)
+  - `asmble-web` → asmble.robin-borg.dev (TLS)
+  - `cloudfiles` → cloud.robin-borg.dev (TLS)
+  - kamal-proxy v0.9.2, Docker, Debian 13
+- **Statut** : Terminé

@@ -114,4 +114,23 @@
 - **Migration** : Render-time (pas de migration DB). Les anciens types restent en registry avec `hidden: true`, mappés vers UniversalTableBlock. BLOCK_MIGRATORS convertit l'ancien format à la volée.
 - **Conséquences** : Réduction massive de code. Les anciens fichiers Block/Modal sont dead code (à supprimer). Tout nouveau "tableau spécialisé" = juste un preset dans tablePresets.js.
 
+## ADR-015 : Déploiement Docker + kamal-proxy (pas Kamal full)
+- **Date** : 2026-03-30
+- **Statut** : Accepté
+- **Décision** : Déployer Arbor en container Docker manuel sur le VPS, routé via kamal-proxy existant. Pas de Kamal complet (pas de `deploy.yml`).
+- **Raison** : Le VPS utilise déjà kamal-proxy pour tous les services. Un déploiement Kamal complet nécessiterait un registry Docker et plus de config, alors que l'approche `docker build` local + `docker save | gzip | ssh | docker load` est plus simple pour un projet solo.
+- **Pipeline de déploiement** :
+  1. `docker build -t arbor:latest .` (local)
+  2. `docker save arbor:latest | gzip | ssh root@VPS 'gunzip | docker load'`
+  3. `docker stop/rm/run` avec les bonnes env vars
+  4. `docker exec kamal-proxy kamal-proxy deploy arbor-web --target arbor-web:80 --host arbor.robin-borg.dev --tls`
+- **Conséquences** : Pas de CI/CD automatisé pour Arbor (déploiement manuel). Le Dockerfile doit rester à jour.
+
+## ADR-016 : Iframe embedding — CSP frame-ancestors
+- **Date** : 2026-03-31
+- **Statut** : Accepté
+- **Décision** : Remplacer le header `X-Frame-Options: SAMEORIGIN` (défaut Rails) par `Content-Security-Policy: frame-ancestors 'self' https://robin-borg.dev https://aegyl.fr` pour permettre l'embedding en iframe dans le Lab Portfolio.
+- **Raison** : Le Lab Portfolio affiche les apps en iframe. Rails bloque par défaut avec X-Frame-Options. CSP frame-ancestors est le standard moderne (plus granulaire, supporte les wildcards).
+- **Conséquences** : Arbor est affichable UNIQUEMENT dans des iframes depuis `robin-borg.dev`, `aegyl.fr`, et lui-même. Tout autre domaine est bloqué.
+
 <!-- Ajouter les ADR du projet ici lors du clonage du boilerplate -->
